@@ -43,7 +43,6 @@ class MainActivity : Activity() {
             allowContentAccess = true
         }
 
-        // <input type="file"> 클릭 시 안드로이드 갤러리/파일 선택기 호출
         webView.webChromeClient = object : WebChromeClient() {
             override fun onShowFileChooser(
                 webView: WebView?,
@@ -83,7 +82,6 @@ class MainActivity : Activity() {
 
     inner class PrintBridge(private val context: Context) {
 
-        // 1. jsPDF로 생성된 Base64 PDF를 바로 인쇄 스풀러로 전달
         @JavascriptInterface
         fun printPdf(base64Data: String, jobName: String) {
             runOnUiThread {
@@ -92,7 +90,6 @@ class MainActivity : Activity() {
             }
         }
 
-        // 2. 오프라인 환경(CDN 미연결)에서도 안드로이드 내장 PdfDocument로 즉시 PDF 생성 및 인쇄
         @JavascriptInterface
         fun printTilesNative(
             tilesJson: String,
@@ -102,23 +99,24 @@ class MainActivity : Activity() {
         ) {
             runOnUiThread {
                 val pdfDoc = PdfDocument()
-                // A4 72 DPI 기준 포인트 크기 (595 x 842 pt)
+                // 1mm = 72 / 25.4 pt (A4: 210mm x 297mm = 595pt x 842pt)
+                val ptPerMm = 72f / 25.4f
                 val pageW = if (orientation == "landscape") 842 else 595
                 val pageH = if (orientation == "landscape") 595 else 842
-                val margin = 28f // 약 10mm 여백
-                val footerSpace = if (showGuide) 22f else 0f
-                val printableW = pageW - margin * 2
-                val printableH = pageH - margin * 2 - footerSpace
+                val margin = 10f * ptPerMm
+                val footerSpace = if (showGuide) (8f * ptPerMm) else 0f
+                val printableW = pageW - margin * 2f
+                val printableH = pageH - margin * 2f - footerSpace
 
                 val arr = JSONArray(tilesJson)
                 val borderPaint = Paint().apply {
                     style = Paint.Style.STROKE
-                    color = Color.rgb(160, 160, 160)
-                    strokeWidth = 0.8f
+                    color = Color.rgb(180, 180, 180)
+                    strokeWidth = 0.6f
                 }
                 val textPaint = Paint().apply {
                     color = Color.rgb(100, 100, 100)
-                    textSize = 10f
+                    textSize = 9.5f
                     textAlign = Paint.Align.CENTER
                     isAntiAlias = true
                 }
@@ -136,16 +134,22 @@ class MainActivity : Activity() {
                     val page = pdfDoc.startPage(pageInfo)
                     val canvas = page.canvas
 
-                    val imgRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
-                    val boxRatio = printableW / printableH
+                    // JS에서 계산한 정확한 물리적 크기(mm)를 그대로 pt로 변환하여 1:1 실측 크기로 배치
                     val drawW: Float
                     val drawH: Float
-                    if (imgRatio > boxRatio) {
-                        drawW = printableW
-                        drawH = printableW / imgRatio
+                    if (obj.has("drawMmW") && obj.has("drawMmH")) {
+                        drawW = obj.getDouble("drawMmW").toFloat() * ptPerMm
+                        drawH = obj.getDouble("drawMmH").toFloat() * ptPerMm
                     } else {
-                        drawH = printableH
-                        drawW = printableH * imgRatio
+                        val imgRatio = bitmap.width.toFloat() / bitmap.height.toFloat()
+                        val boxRatio = printableW / printableH
+                        if (imgRatio > boxRatio) {
+                            drawW = printableW
+                            drawH = printableW / imgRatio
+                        } else {
+                            drawH = printableH
+                            drawW = printableH * imgRatio
+                        }
                     }
 
                     val left = margin + (printableW - drawW) / 2f
@@ -157,7 +161,7 @@ class MainActivity : Activity() {
                     if (showGuide) {
                         canvas.drawRect(destRect, borderPaint)
                         canvas.drawText(
-                            "Page ${i + 1}/${arr.length()}  [Row $row - Col $col]",
+                            "Page ${i + 1}/${arr.length()}  [Row $row - Col $col] (붉은 점선: 재단 및 이어 붙이기 기준선)",
                             pageW / 2f,
                             pageH - 12f,
                             textPaint
