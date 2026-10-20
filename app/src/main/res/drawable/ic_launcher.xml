@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 1. 아이콘 배경 (앱 테마 컬러 #2563EB) -->
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M0,0h108v108h-108z" />
+
+    <!-- 2. 상단 원본 사진 용지 -->
+    <path
+        android:fillColor="#93C5FD"
+        android:pathData="M34,20h40v14h-40z" />
+
+    <!-- 3. 프린터 본체 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M26,32h56c3.3,0 6,2.7 6,6v20c0,2.2 -1.8,4 -4,4h-6v-12h-48v12h-6c-2.2,0 -4,-1.8 -4,-4v-20c0,-3.3 2.7,-6 6,-6z" />
+
+    <!-- 프린터 상태 표시등 (초록불) -->
+    <path
+        android:fillColor="#10B981"
+        android:pathData="M74,40a2.5,2.5 0 1,0 5,0a2.5,2.5 0 1,0 -5,0" />
+
+    <!-- 4. 하단 출력되는 4분할(2x2) 사진 타일 -->
+    <!-- 좌상단 조각 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M33,52h19v16h-19z" />
+    <!-- 우상단 조각 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M56,52h19v16h-19z" />
+    <!-- 좌하단 조각 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M33,72h19v16h-19z" />
+    <!-- 우하단 조각 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M56,72h19v16h-19z" />
+
+    <!-- 5. 분할 재단 가이드라인 (빨간색 십자선) -->
+    <path
+        android:fillColor="#EF4444"
+        android:pathData="M53,50h2v40h-2z" />
+    <path
+        android:fillColor="#EF4444"
+        android:pathData="M31,69h46v2h-46z" />
+
+    <!-- 타일 내부 산/태양 심볼 (사진 느낌 강조) -->
+    <path
+        android:fillColor="#3B82F6"
+        android:pathData="M41,60a3,3 0 1,0 6,0a3,3 0 1,0 -6,0" />
+    <path
+        android:fillColor="#60A5FA"
+        android:pathData="M36,85l10,-10l6,6l10,-12l10,16z" />
+</vector>
