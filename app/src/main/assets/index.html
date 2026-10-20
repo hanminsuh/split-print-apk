@@ -22,17 +22,27 @@
     .card-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; color: #334155; }
     .upload-label { display: flex; align-items: center; justify-content: center; width: 100%; padding: 14px; background-color: #eff6ff; color: var(--primary); border: 2px dashed #93c5fd; border-radius: 8px; font-weight: 600; cursor: pointer; text-align: center; }
     #fileInput { display: none; }
+
+    /* 모드 선택 탭 */
+    .mode-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; background: #f1f5f9; padding: 4px; border-radius: 8px; }
+    .tab-btn { padding: 9px; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; background: transparent; color: #64748b; }
+    .tab-btn.active { background: #ffffff; color: var(--primary); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+
     .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .control-group { display: flex; flex-direction: column; gap: 6px; }
     .control-group.full { grid-column: span 2; }
-    label { font-size: 0.85rem; color: #475569; font-weight: 500; }
+    label { font-size: 0.82rem; color: #475569; font-weight: 500; }
     select, input[type="number"] { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; background: #fff; }
+    .checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #334155; margin-top: 2px; }
+    .checkbox-row input { width: 16px; height: 16px; }
+
     .preview-wrapper { position: relative; width: 100%; min-height: 240px; background: #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 12px; }
     #previewCanvas { max-width: 100%; max-height: 360px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); background: #fff; display: none; }
     .empty-msg { color: #64748b; font-size: 0.9rem; text-align: center; }
-    .info-bar { margin-top: 10px; font-size: 0.8rem; color: #475569; background: #f1f5f9; padding: 8px 12px; border-radius: 6px; line-height: 1.5; }
+    .info-bar { margin-top: 10px; font-size: 0.82rem; color: #334155; background: #f1f5f9; padding: 10px 12px; border-radius: 6px; line-height: 1.5; }
     .btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; background-color: var(--primary); color: #ffffff; }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
@@ -42,23 +52,57 @@
   </header>
 
   <div class="container">
+    <!-- 1. 사진 선택 -->
     <div class="card">
       <div class="card-title">1. 사진 불러오기</div>
       <label for="fileInput" class="upload-label" id="uploadLabel">갤러리에서 사진 선택</label>
       <input type="file" id="fileInput" accept="image/*" />
     </div>
 
+    <!-- 2. 분할 및 크기 설정 -->
     <div class="card">
-      <div class="card-title">2. 분할 및 용지 설정</div>
-      <div class="controls-grid">
+      <div class="card-title">2. 출력 크기 및 분할 설정</div>
+
+      <!-- 모드 전환 탭 -->
+      <div class="mode-tabs">
+        <button type="button" class="tab-btn active" id="tabSizeBtn">원하는 크기(cm)로 출력</button>
+        <button type="button" class="tab-btn" id="tabGridBtn">장수(열×행)로 균등 분할</button>
+      </div>
+
+      <!-- [모드 A] 원하는 물리적 크기(cm) 직접 입력 -->
+      <div class="controls-grid" id="sizeModePanel">
+        <div class="control-group">
+          <label for="targetWidthCm">출력 가로 길이 (cm)</label>
+          <input type="number" id="targetWidthCm" value="40" min="5" max="200" step="0.5" />
+        </div>
+        <div class="control-group">
+          <label for="targetHeightCm">출력 세로 길이 (cm)</label>
+          <input type="number" id="targetHeightCm" value="30" min="5" max="200" step="0.5" />
+        </div>
+        <div class="control-group full">
+          <label class="checkbox-row">
+            <input type="checkbox" id="keepAspectCheck" checked />
+            사진 원본 가로·세로 비율 자동 유지
+          </label>
+        </div>
+      </div>
+
+      <!-- [모드 B] 기존 열x행 장수 지정 -->
+      <div class="controls-grid hidden" id="gridModePanel">
         <div class="control-group">
           <label for="colsInput">가로 분할 (열)</label>
-          <input type="number" id="colsInput" value="2" min="1" max="6" />
+          <input type="number" id="colsInput" value="2" min="1" max="8" />
         </div>
         <div class="control-group">
           <label for="rowsInput">세로 분할 (행)</label>
-          <input type="number" id="rowsInput" value="2" min="1" max="6" />
+          <input type="number" id="rowsInput" value="2" min="1" max="8" />
         </div>
+      </div>
+
+      <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 14px 0;" />
+
+      <!-- 공통 용지 설정 -->
+      <div class="controls-grid">
         <div class="control-group">
           <label for="orientationSelect">A4 용지 방향</label>
           <select id="orientationSelect">
@@ -80,13 +124,14 @@
       </div>
     </div>
 
+    <!-- 3. 미리보기 -->
     <div class="card">
       <div class="card-title">3. 분할 레이아웃 미리보기</div>
       <div class="preview-wrapper">
-        <div class="empty-msg" id="emptyMsg">사진을 선택하면 분할 격자가 표시됩니다.</div>
+        <div class="empty-msg" id="emptyMsg">사진을 선택하면 분할 격자와 실제 출력 크기가 표시됩니다.</div>
         <canvas id="previewCanvas"></canvas>
       </div>
-      <div class="info-bar" id="infoBar">총 출력 페이지: 4장 (2 × 2 분할)</div>
+      <div class="info-bar" id="infoBar">사진을 먼저 불러와 주세요.</div>
     </div>
 
     <button class="btn" id="printBtn" disabled>분할 인쇄 및 PDF 저장 실행</button>
@@ -95,8 +140,17 @@
   <script>
     const fileInput = document.getElementById('fileInput');
     const uploadLabel = document.getElementById('uploadLabel');
+    const tabSizeBtn = document.getElementById('tabSizeBtn');
+    const tabGridBtn = document.getElementById('tabGridBtn');
+    const sizeModePanel = document.getElementById('sizeModePanel');
+    const gridModePanel = document.getElementById('gridModePanel');
+
+    const targetWidthCm = document.getElementById('targetWidthCm');
+    const targetHeightCm = document.getElementById('targetHeightCm');
+    const keepAspectCheck = document.getElementById('keepAspectCheck');
     const colsInput = document.getElementById('colsInput');
     const rowsInput = document.getElementById('rowsInput');
+
     const orientationSelect = document.getElementById('orientationSelect');
     const overlapInput = document.getElementById('overlapInput');
     const cutlineSelect = document.getElementById('cutlineSelect');
@@ -106,7 +160,28 @@
     const printBtn = document.getElementById('printBtn');
 
     let loadedImage = null;
+    let currentMode = 'size'; // 'size' (크기 지정) 또는 'grid' (장수 지정)
 
+    // 탭 전환 이벤트
+    tabSizeBtn.addEventListener('click', () => {
+      currentMode = 'size';
+      tabSizeBtn.classList.add('active');
+      tabGridBtn.classList.remove('active');
+      sizeModePanel.classList.remove('hidden');
+      gridModePanel.classList.add('hidden');
+      updatePreview();
+    });
+
+    tabGridBtn.addEventListener('click', () => {
+      currentMode = 'grid';
+      tabGridBtn.classList.add('active');
+      tabSizeBtn.classList.remove('active');
+      gridModePanel.classList.remove('hidden');
+      sizeModePanel.classList.add('hidden');
+      updatePreview();
+    });
+
+    // 이미지 로드
     fileInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -117,6 +192,11 @@
         const img = new Image();
         img.onload = () => {
           loadedImage = img;
+          // 사진 로드 시 가로 길이를 기준으로 세로 cm 초기값 자동 세팅
+          if (keepAspectCheck.checked) {
+            const w = parseFloat(targetWidthCm.value) || 40;
+            targetHeightCm.value = ((w * img.height) / img.width).toFixed(1);
+          }
           emptyMsg.style.display = 'none';
           previewCanvas.style.display = 'block';
           printBtn.disabled = false;
@@ -127,86 +207,145 @@
       reader.readAsDataURL(file);
     });
 
+    // 가로 cm 입력 시 세로 cm 자동 연동
+    targetWidthCm.addEventListener('input', () => {
+      if (loadedImage && keepAspectCheck.checked) {
+        const w = parseFloat(targetWidthCm.value);
+        if (w > 0) {
+          targetHeightCm.value = ((w * loadedImage.height) / loadedImage.width).toFixed(1);
+        }
+      }
+      updatePreview();
+    });
+
+    // 세로 cm 입력 시 가로 cm 자동 연동
+    targetHeightCm.addEventListener('input', () => {
+      if (loadedImage && keepAspectCheck.checked) {
+        const h = parseFloat(targetHeightCm.value);
+        if (h > 0) {
+          targetWidthCm.value = ((h * loadedImage.width) / loadedImage.height).toFixed(1);
+        }
+      }
+      updatePreview();
+    });
+
+    keepAspectCheck.addEventListener('change', () => {
+      if (loadedImage && keepAspectCheck.checked) {
+        const w = parseFloat(targetWidthCm.value) || 40;
+        targetHeightCm.value = ((w * loadedImage.height) / loadedImage.width).toFixed(1);
+      }
+      updatePreview();
+    });
+
     [colsInput, rowsInput, orientationSelect, overlapInput, cutlineSelect].forEach(el => {
       el.addEventListener('input', updatePreview);
       el.addEventListener('change', updatePreview);
     });
 
-    function getSettings() {
-      const cols = Math.min(6, Math.max(1, parseInt(colsInput.value, 10) || 1));
-      const rows = Math.min(6, Math.max(1, parseInt(rowsInput.value, 10) || 1));
+    // 핵심 기하학 계산 (크기 지정 모드 & 장수 지정 모드 통합)
+    function calculateGeometry() {
       const orientation = orientationSelect.value;
       const overlapMm = Math.min(20, Math.max(0, parseInt(overlapInput.value, 10) || 0));
       const showGuide = cutlineSelect.value === 'true';
-      return { cols, rows, orientation, overlapMm, showGuide };
-    }
 
-    // 모든 타일의 물리적 크기(mm)와 원본 픽셀 간의 정확한 단일 배율 계산
-    function calculateGeometry() {
-      const { cols, rows, orientation, overlapMm, showGuide } = getSettings();
       const pageW = orientation === 'landscape' ? 297 : 210;
       const pageH = orientation === 'landscape' ? 210 : 297;
-      const margin = 10;
+      const margin = 10; // 프린터 하드웨어 여백 10mm
       const printableW = pageW - margin * 2;
       const printableH = pageH - margin * 2 - (showGuide ? 8 : 0);
 
-      // 한 페이지 내에서 양쪽 겹침 여백(2 * overlapMm)을 뺀 순수 코어 영역의 최대 가용 크기(mm)
+      // A4 1장이 담당할 수 있는 최대 순수 코어 크기(mm)
       const maxCoreW = Math.max(20, printableW - 2 * overlapMm);
       const maxCoreH = Math.max(20, printableH - 2 * overlapMm);
 
-      const baseTilePxW = loadedImage.width / cols;
-      const baseTilePxH = loadedImage.height / rows;
-      const tileAspect = baseTilePxW / baseTilePxH;
+      let cols, rows, coreW_mm, coreH_mm, totalW_mm, totalH_mm;
 
-      let coreW_mm, coreH_mm;
-      if (tileAspect > maxCoreW / maxCoreH) {
-        coreW_mm = maxCoreW;
-        coreH_mm = maxCoreW / tileAspect;
+      if (currentMode === 'size') {
+        // [모드 A] 사용자가 입력한 목표 크기(cm -> mm)
+        const reqW_cm = Math.min(250, Math.max(2, parseFloat(targetWidthCm.value) || 30));
+        const reqH_cm = Math.min(250, Math.max(2, parseFloat(targetHeightCm.value) || 20));
+        totalW_mm = reqW_cm * 10;
+        totalH_mm = reqH_cm * 10;
+
+        // 필요한 A4 장수 자동 계산 (1장 이하면 단 1장에 정확한 치수로 인쇄)
+        cols = Math.max(1, Math.ceil(totalW_mm / maxCoreW));
+        rows = Math.max(1, Math.ceil(totalH_mm / maxCoreH));
+
+        coreW_mm = totalW_mm / cols;
+        coreH_mm = totalH_mm / rows;
       } else {
-        coreH_mm = maxCoreH;
-        coreW_mm = maxCoreH * tileAspect;
+        // [모드 B] 사용자가 입력한 열x행 장수에 맞춰 A4 최대 크기로 분할
+        cols = Math.min(8, Math.max(1, parseInt(colsInput.value, 10) || 1));
+        rows = Math.min(8, Math.max(1, parseInt(rowsInput.value, 10) || 1));
+
+        const baseTilePxW = loadedImage.width / cols;
+        const baseTilePxH = loadedImage.height / rows;
+        const tileAspect = baseTilePxW / baseTilePxH;
+
+        if (tileAspect > maxCoreW / maxCoreH) {
+          coreW_mm = maxCoreW;
+          coreH_mm = maxCoreW / tileAspect;
+        } else {
+          coreH_mm = maxCoreH;
+          coreW_mm = maxCoreH * tileAspect;
+        }
+        totalW_mm = coreW_mm * cols;
+        totalH_mm = coreH_mm * rows;
       }
 
-      // 1mm당 원본 이미지 픽셀 수 (가로·세로 완벽히 동일한 단일 스케일)
-      const pxPerMm = baseTilePxW / coreW_mm;
-      const overlapPx = overlapMm * pxPerMm;
+      const baseTilePxW = loadedImage.width / cols;
+      const baseTilePxH = loadedImage.height / rows;
 
-      // 모든 페이지에 동일하게 적용될 타일 전체 크기(코어 + 양쪽 겹침 슬롯)
+      // 1mm당 픽셀 수 (가로·세로 개별 계산으로 자유 비율까지 완벽 대응)
+      const pxPerMmX = baseTilePxW / coreW_mm;
+      const pxPerMmY = baseTilePxH / coreH_mm;
+
+      const overlapPxX = overlapMm * pxPerMmX;
+      const overlapPxY = overlapMm * pxPerMmY;
+
+      // 한 페이지에 그려질 타일 전체의 정확한 물리적 크기 (코어 + 양쪽 겹침 여백)
       const totalTileMmW = coreW_mm + 2 * overlapMm;
       const totalTileMmH = coreH_mm + 2 * overlapMm;
 
       return {
         cols, rows, orientation, overlapMm, showGuide,
         pageW, pageH, margin, printableW, printableH,
-        baseTilePxW, baseTilePxH, overlapPx,
-        coreW_mm, coreH_mm, totalTileMmW, totalTileMmH
+        baseTilePxW, baseTilePxH, overlapPxX, overlapPxY,
+        coreW_mm, coreH_mm, totalTileMmW, totalTileMmH,
+        totalW_mm, totalH_mm
       };
     }
 
     function updatePreview() {
-      const { cols, rows, overlapMm } = getSettings();
-      const totalPages = cols * rows;
-
       if (!loadedImage) {
-        infoBar.textContent = `총 출력 페이지: ${totalPages}장 (${cols} × ${rows} 분할)`;
+        infoBar.textContent = '사진을 선택하면 필요한 A4 용지 장수와 완성 크기가 계산됩니다.';
         return;
       }
 
       const geom = calculateGeometry();
-      const finalPosterW_cm = ((geom.coreW_mm * cols) / 10).toFixed(1);
-      const finalPosterH_cm = ((geom.coreH_mm * rows) / 10).toFixed(1);
+      const { cols, rows, overlapMm, totalW_mm, totalH_mm, coreW_mm, coreH_mm } = geom;
+      const totalPages = cols * rows;
 
-      const maxPreviewDim = 800;
-      const scale = Math.min(1, maxPreviewDim / Math.max(loadedImage.width, loadedImage.height));
-      previewCanvas.width = Math.round(loadedImage.width * scale);
-      previewCanvas.height = Math.round(loadedImage.height * scale);
+      // 미리보기 캔버스 렌더링 (설정된 출력 비율 반영)
+      const maxPreviewDim = 750;
+      const targetAspect = totalW_mm / totalH_mm;
+      let pW, pH;
+      if (targetAspect >= 1) {
+        pW = maxPreviewDim;
+        pH = Math.round(maxPreviewDim / targetAspect);
+      } else {
+        pH = maxPreviewDim;
+        pW = Math.round(maxPreviewDim * targetAspect);
+      }
+      previewCanvas.width = pW;
+      previewCanvas.height = pH;
 
       const ctx = previewCanvas.getContext('2d');
-      ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
-      ctx.drawImage(loadedImage, 0, 0, previewCanvas.width, previewCanvas.height);
+      ctx.clearRect(0, 0, pW, pH);
+      ctx.drawImage(loadedImage, 0, 0, pW, pH);
 
-      const cellW = previewCanvas.width / cols;
-      const cellH = previewCanvas.height / rows;
+      const cellW = pW / cols;
+      const cellH = pH / rows;
 
       ctx.lineWidth = 2;
       ctx.strokeStyle = 'rgba(239, 68, 68, 0.9)';
@@ -221,41 +360,57 @@
 
           const cx = x + cellW / 2, cy = y + cellH / 2;
           ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
-          ctx.fillRect(cx - 27, cy - 12, 54, 24);
+          ctx.fillRect(cx - 28, cy - 12, 56, 24);
           ctx.fillStyle = '#ffffff';
           ctx.fillText(`${r + 1}행-${c + 1}열`, cx, cy);
         }
       }
 
-      infoBar.textContent = `완성 포스터 크기: 약 ${finalPosterW_cm} × ${finalPosterH_cm}cm | 총 A4 ${totalPages}장 (정확한 겹침 여백 ${overlapMm}mm 적용)`;
+      const finalW_cm = (totalW_mm / 10).toFixed(1);
+      const finalH_cm = (totalH_mm / 10).toFixed(1);
+      const tileW_cm = (coreW_mm / 10).toFixed(1);
+      const tileH_cm = (coreH_mm / 10).toFixed(1);
+
+      infoBar.innerHTML =
+        `<strong>완성 출력 크기: 가로 ${finalW_cm}cm × 세로 ${finalH_cm}cm</strong><br>` +
+        `필요한 A4 용지: <strong>총 ${totalPages}장 (${cols}열 × ${rows}행)</strong> | 조각당 ${tileW_cm}×${tileH_cm}cm (겹침 ${overlapMm}mm)`;
     }
 
-    // 동일 배율 패딩 및 메모리 상한(최대 1600px)이 적용된 타일 생성기
     function generateUniformTiles() {
       const geom = calculateGeometry();
-      const { cols, rows, overlapMm, showGuide, baseTilePxW, baseTilePxH, overlapPx } = geom;
+      const {
+        cols, rows, overlapMm, showGuide,
+        baseTilePxW, baseTilePxH, overlapPxX, overlapPxY,
+        totalTileMmW, totalTileMmH
+      } = geom;
       const tiles = [];
 
-      // 모든 타일의 원본 기준 가상 폭/높이 (양쪽에 항상 overlapPx 슬롯을 확보하여 배율 통일)
-      const virtualFullPxW = baseTilePxW + 2 * overlapPx;
-      const virtualFullPxH = baseTilePxH + 2 * overlapPx;
-
-      // 메모리 부족(OOM) 방지를 위해 타일 1장당 최대 해상도를 1600px(약 180~200 DPI)로 제한
+      // 타일의 물리적(mm) 비율에 맞춰 캔버스 픽셀 크기를 결정 (최대 1600px 제한으로 메모리 보호)
       const MAX_TILE_PX = 1600;
-      const downScale = Math.min(1, MAX_TILE_PX / Math.max(virtualFullPxW, virtualFullPxH));
+      const virtualFullPxW = baseTilePxW + 2 * overlapPxX;
+      const virtualFullPxH = baseTilePxH + 2 * overlapPxY;
+      const approxMaxPx = Math.max(virtualFullPxW, virtualFullPxH);
+      const targetMaxPx = Math.min(MAX_TILE_PX, Math.round(approxMaxPx));
 
-      const canvasW = Math.round(virtualFullPxW * downScale);
-      const canvasH = Math.round(virtualFullPxH * downScale);
+      let canvasW, canvasH;
+      if (totalTileMmW >= totalTileMmH) {
+        canvasW = targetMaxPx;
+        canvasH = Math.max(1, Math.round(targetMaxPx * (totalTileMmH / totalTileMmW)));
+      } else {
+        canvasH = targetMaxPx;
+        canvasW = Math.max(1, Math.round(targetMaxPx * (totalTileMmW / totalTileMmH)));
+      }
+
+      const scaleX = canvasW / virtualFullPxW;
+      const scaleY = canvasH / virtualFullPxH;
 
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
-          // 이 타일의 가상 전체 영역 (외곽 타일은 음수이거나 원본 크기를 초과함)
-          const idealSx = c * baseTilePxW - overlapPx;
-          const idealSy = r * baseTilePxH - overlapPx;
-          const idealEx = (c + 1) * baseTilePxW + overlapPx;
-          const idealEy = (r + 1) * baseTilePxH + overlapPx;
+          const idealSx = c * baseTilePxW - overlapPxX;
+          const idealSy = r * baseTilePxH - overlapPxY;
+          const idealEx = (c + 1) * baseTilePxW + overlapPxX;
+          const idealEy = (r + 1) * baseTilePxH + overlapPxY;
 
-          // 실제 원본 이미지 내부와 겹치는 유효 픽셀 구간만 클리핑
           const actualSx = Math.max(0, idealSx);
           const actualSy = Math.max(0, idealSy);
           const actualEx = Math.min(loadedImage.width, idealEx);
@@ -264,11 +419,10 @@
           const sw = actualEx - actualSx;
           const sh = actualEy - actualSy;
 
-          // 고정 규격 캔버스 내부에서 그려질 정확한 위치 오프셋 계산
-          const dx = (actualSx - idealSx) * downScale;
-          const dy = (actualSy - idealSy) * downScale;
-          const dw = sw * downScale;
-          const dh = sh * downScale;
+          const dx = (actualSx - idealSx) * scaleX;
+          const dy = (actualSy - idealSy) * scaleY;
+          const dw = sw * scaleX;
+          const dh = sh * scaleY;
 
           const tileCanvas = document.createElement('canvas');
           tileCanvas.width = canvasW;
@@ -279,17 +433,17 @@
           tCtx.fillRect(0, 0, canvasW, canvasH);
           tCtx.drawImage(loadedImage, actualSx, actualSy, sw, sh, dx, dy, dw, dh);
 
-          // 재단 안내선(순수 코어 영역 경계선)을 타일 내부의 정확한 mm 위치에 점선으로 표시
-          if (showGuide && overlapMm > 0) {
-            const coreX = overlapPx * downScale;
-            const coreY = overlapPx * downScale;
-            const coreW = baseTilePxW * downScale;
-            const coreH = baseTilePxH * downScale;
+          // 재단 기준선 (정확히 겹침 여백 안쪽의 코어 영역 테두리에 빨간 점선 표시)
+          if (showGuide) {
+            const coreX = overlapPxX * scaleX;
+            const coreY = overlapPxY * scaleY;
+            const coreW = baseTilePxW * scaleX;
+            const coreH = baseTilePxH * scaleY;
 
             tCtx.save();
-            tCtx.strokeStyle = 'rgba(220, 38, 38, 0.75)';
-            tCtx.lineWidth = Math.max(1, Math.round(1.5 * downScale));
-            tCtx.setLineDash([6, 4]);
+            tCtx.strokeStyle = 'rgba(220, 38, 38, 0.8)';
+            tCtx.lineWidth = Math.max(1.5, Math.round(canvasW / 500));
+            tCtx.setLineDash([8, 5]);
             tCtx.strokeRect(coreX, coreY, coreW, coreH);
             tCtx.restore();
           }
@@ -297,9 +451,11 @@
           tiles.push({
             row: r + 1,
             col: c + 1,
-            dataUrl: tileCanvas.toDataURL('image/jpeg', 0.85), // 메모리 절약을 위해 0.85 품질 적용
+            dataUrl: tileCanvas.toDataURL('image/jpeg', 0.85),
             width: canvasW,
-            height: canvasH
+            height: canvasH,
+            drawMmW: totalTileMmW,
+            drawMmH: totalTileMmH
           });
         }
       }
@@ -309,13 +465,19 @@
     printBtn.addEventListener('click', () => {
       if (!loadedImage) return;
       printBtn.disabled = true;
-      printBtn.textContent = '인쇄 데이터 생성 중...';
+      printBtn.textContent = '실측 크기 인쇄 데이터 생성 중...';
 
       setTimeout(() => {
         try {
           const { tiles, geom } = generateUniformTiles();
-          const { cols, rows, orientation, showGuide, pageW, pageH, margin, printableW, printableH, totalTileMmW, totalTileMmH } = geom;
-          const jobName = `split_print_${cols}x${rows}`;
+          const {
+            cols, rows, orientation, showGuide,
+            pageW, pageH, margin, printableW, printableH,
+            totalTileMmW, totalTileMmH, totalW_mm, totalH_mm
+          } = geom;
+
+          const sizeLabel = `${(totalW_mm / 10).toFixed(0)}x${(totalH_mm / 10).toFixed(0)}cm`;
+          const jobName = `split_${sizeLabel}_${cols}x${rows}`;
 
           if (window.AndroidBridge && window.AndroidBridge.printTilesNative) {
             window.AndroidBridge.printTilesNative(
@@ -332,7 +494,6 @@
               format: 'a4'
             });
 
-            // 모든 페이지에 정확히 동일한 물리적 mm 크기(totalTileMmW x totalTileMmH)로 배치
             const offsetX = margin + (printableW - totalTileMmW) / 2;
             const offsetY = margin + (printableH - totalTileMmH) / 2;
 
@@ -347,7 +508,7 @@
                 pdf.setFontSize(9);
                 pdf.setTextColor(100, 100, 100);
                 pdf.text(
-                  `Page ${index + 1}/${tiles.length}  [Row ${tile.row} - Col ${tile.col}] (점선: 재단/풀칠 기준선)`,
+                  `Page ${index + 1}/${tiles.length} [${tile.row}-${tile.col}] | Total: ${(totalW_mm/10).toFixed(1)}x${(totalH_mm/10).toFixed(1)}cm (Red dash: Cut line)`,
                   pageW / 2,
                   pageH - 6,
                   { align: 'center' }
