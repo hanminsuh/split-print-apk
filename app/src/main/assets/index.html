@@ -13,168 +13,26 @@
       --text: #1e293b;
       --border: #cbd5e1;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      padding-bottom: 36px;
-    }
-
-    header {
-      background: var(--card);
-      padding: 16px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    header h1 {
-      font-size: 1.15rem;
-      font-weight: 700;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-
-    .card-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: #334155;
-    }
-
-    .upload-label {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 14px;
-      background-color: #eff6ff;
-      color: var(--primary);
-      border: 2px dashed #93c5fd;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      text-align: center;
-    }
-
-    #fileInput {
-      display: none;
-    }
-
-    .controls-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .control-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .control-group.full {
-      grid-column: span 2;
-    }
-
-    label {
-      font-size: 0.85rem;
-      color: #475569;
-      font-weight: 500;
-    }
-
-    select, input[type="number"] {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.95rem;
-      background: #fff;
-    }
-
-    .preview-wrapper {
-      position: relative;
-      width: 100%;
-      min-height: 240px;
-      background: #e2e8f0;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      padding: 12px;
-    }
-
-    #previewCanvas {
-      max-width: 100%;
-      max-height: 360px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      background: #fff;
-      display: none;
-    }
-
-    .empty-msg {
-      color: #64748b;
-      font-size: 0.9rem;
-      text-align: center;
-    }
-
-    .info-bar {
-      margin-top: 10px;
-      font-size: 0.8rem;
-      color: #475569;
-      background: #f1f5f9;
-      padding: 8px 12px;
-      border-radius: 6px;
-      line-height: 1.4;
-    }
-
-    .btn-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      background-color: var(--primary);
-      color: #ffffff;
-    }
-
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 36px; }
+    header { background: var(--card); padding: 16px; text-align: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+    header h1 { font-size: 1.15rem; font-weight: 700; }
+    .container { max-width: 600px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .card-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; color: #334155; }
+    .upload-label { display: flex; align-items: center; justify-content: center; width: 100%; padding: 14px; background-color: #eff6ff; color: var(--primary); border: 2px dashed #93c5fd; border-radius: 8px; font-weight: 600; cursor: pointer; text-align: center; }
+    #fileInput { display: none; }
+    .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .control-group { display: flex; flex-direction: column; gap: 6px; }
+    .control-group.full { grid-column: span 2; }
+    label { font-size: 0.85rem; color: #475569; font-weight: 500; }
+    select, input[type="number"] { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; background: #fff; }
+    .preview-wrapper { position: relative; width: 100%; min-height: 240px; background: #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 12px; }
+    #previewCanvas { max-width: 100%; max-height: 360px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); background: #fff; display: none; }
+    .empty-msg { color: #64748b; font-size: 0.9rem; text-align: center; }
+    .info-bar { margin-top: 10px; font-size: 0.8rem; color: #475569; background: #f1f5f9; padding: 8px 12px; border-radius: 6px; line-height: 1.5; }
+    .btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; background-color: var(--primary); color: #ffffff; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
   </style>
 </head>
 <body>
@@ -186,9 +44,7 @@
   <div class="container">
     <div class="card">
       <div class="card-title">1. 사진 불러오기</div>
-      <label for="fileInput" class="upload-label" id="uploadLabel">
-        갤러리에서 사진 선택
-      </label>
+      <label for="fileInput" class="upload-label" id="uploadLabel">갤러리에서 사진 선택</label>
       <input type="file" id="fileInput" accept="image/*" />
     </div>
 
@@ -212,12 +68,12 @@
         </div>
         <div class="control-group">
           <label for="overlapInput">풀칠 겹침 여백 (mm)</label>
-          <input type="number" id="overlapInput" value="5" min="0" max="25" />
+          <input type="number" id="overlapInput" value="5" min="0" max="20" />
         </div>
         <div class="control-group full">
           <label for="cutlineSelect">재단 안내선 및 페이지 번호 표시</label>
           <select id="cutlineSelect">
-            <option value="true">표시함 (이어 붙이기 권장)</option>
+            <option value="true">표시함 (정확한 재단선 포함)</option>
             <option value="false">표시 안 함 (이미지만 출력)</option>
           </select>
         </div>
@@ -230,16 +86,10 @@
         <div class="empty-msg" id="emptyMsg">사진을 선택하면 분할 격자가 표시됩니다.</div>
         <canvas id="previewCanvas"></canvas>
       </div>
-      <div class="info-bar" id="infoBar">
-        총 출력 페이지: 4장 (2 × 2 분할)
-      </div>
+      <div class="info-bar" id="infoBar">총 출력 페이지: 4장 (2 × 2 분할)</div>
     </div>
 
-    <div class="btn-group">
-      <button class="btn" id="printBtn" disabled>
-        분할 인쇄 및 PDF 저장 실행
-      </button>
-    </div>
+    <button class="btn" id="printBtn" disabled>분할 인쇄 및 PDF 저장 실행</button>
   </div>
 
   <script>
@@ -286,9 +136,51 @@
       const cols = Math.min(6, Math.max(1, parseInt(colsInput.value, 10) || 1));
       const rows = Math.min(6, Math.max(1, parseInt(rowsInput.value, 10) || 1));
       const orientation = orientationSelect.value;
-      const overlapMm = Math.min(25, Math.max(0, parseInt(overlapInput.value, 10) || 0));
+      const overlapMm = Math.min(20, Math.max(0, parseInt(overlapInput.value, 10) || 0));
       const showGuide = cutlineSelect.value === 'true';
       return { cols, rows, orientation, overlapMm, showGuide };
+    }
+
+    // 모든 타일의 물리적 크기(mm)와 원본 픽셀 간의 정확한 단일 배율 계산
+    function calculateGeometry() {
+      const { cols, rows, orientation, overlapMm, showGuide } = getSettings();
+      const pageW = orientation === 'landscape' ? 297 : 210;
+      const pageH = orientation === 'landscape' ? 210 : 297;
+      const margin = 10;
+      const printableW = pageW - margin * 2;
+      const printableH = pageH - margin * 2 - (showGuide ? 8 : 0);
+
+      // 한 페이지 내에서 양쪽 겹침 여백(2 * overlapMm)을 뺀 순수 코어 영역의 최대 가용 크기(mm)
+      const maxCoreW = Math.max(20, printableW - 2 * overlapMm);
+      const maxCoreH = Math.max(20, printableH - 2 * overlapMm);
+
+      const baseTilePxW = loadedImage.width / cols;
+      const baseTilePxH = loadedImage.height / rows;
+      const tileAspect = baseTilePxW / baseTilePxH;
+
+      let coreW_mm, coreH_mm;
+      if (tileAspect > maxCoreW / maxCoreH) {
+        coreW_mm = maxCoreW;
+        coreH_mm = maxCoreW / tileAspect;
+      } else {
+        coreH_mm = maxCoreH;
+        coreW_mm = maxCoreH * tileAspect;
+      }
+
+      // 1mm당 원본 이미지 픽셀 수 (가로·세로 완벽히 동일한 단일 스케일)
+      const pxPerMm = baseTilePxW / coreW_mm;
+      const overlapPx = overlapMm * pxPerMm;
+
+      // 모든 페이지에 동일하게 적용될 타일 전체 크기(코어 + 양쪽 겹침 슬롯)
+      const totalTileMmW = coreW_mm + 2 * overlapMm;
+      const totalTileMmH = coreH_mm + 2 * overlapMm;
+
+      return {
+        cols, rows, orientation, overlapMm, showGuide,
+        pageW, pageH, margin, printableW, printableH,
+        baseTilePxW, baseTilePxH, overlapPx,
+        coreW_mm, coreH_mm, totalTileMmW, totalTileMmH
+      };
     }
 
     function updatePreview() {
@@ -299,6 +191,10 @@
         infoBar.textContent = `총 출력 페이지: ${totalPages}장 (${cols} × ${rows} 분할)`;
         return;
       }
+
+      const geom = calculateGeometry();
+      const finalPosterW_cm = ((geom.coreW_mm * cols) / 10).toFixed(1);
+      const finalPosterH_cm = ((geom.coreH_mm * rows) / 10).toFixed(1);
 
       const maxPreviewDim = 800;
       const scale = Math.min(1, maxPreviewDim / Math.max(loadedImage.width, loadedImage.height));
@@ -314,132 +210,157 @@
 
       ctx.lineWidth = 2;
       ctx.strokeStyle = 'rgba(239, 68, 68, 0.9)';
-      ctx.font = 'bold 14px sans-serif';
+      ctx.font = 'bold 13px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
-          const x = c * cellW;
-          const y = r * cellH;
+          const x = c * cellW, y = r * cellH;
           ctx.strokeRect(x, y, cellW, cellH);
 
-          const badgeW = 54;
-          const badgeH = 24;
-          const cx = x + cellW / 2;
-          const cy = y + cellH / 2;
+          const cx = x + cellW / 2, cy = y + cellH / 2;
           ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
-          ctx.fillRect(cx - badgeW / 2, cy - badgeH / 2, badgeW, badgeH);
+          ctx.fillRect(cx - 27, cy - 12, 54, 24);
           ctx.fillStyle = '#ffffff';
           ctx.fillText(`${r + 1}행-${c + 1}열`, cx, cy);
         }
       }
 
-      infoBar.textContent = `원본 해상도: ${loadedImage.width} × ${loadedImage.height}px | 총 출력: A4 ${totalPages}장 (${cols}열 × ${rows}행, 겹침 ${overlapMm}mm)`;
+      infoBar.textContent = `완성 포스터 크기: 약 ${finalPosterW_cm} × ${finalPosterH_cm}cm | 총 A4 ${totalPages}장 (정확한 겹침 여백 ${overlapMm}mm 적용)`;
     }
 
-    function generateTiles() {
-      const { cols, rows, overlapMm } = getSettings();
+    // 동일 배율 패딩 및 메모리 상한(최대 1600px)이 적용된 타일 생성기
+    function generateUniformTiles() {
+      const geom = calculateGeometry();
+      const { cols, rows, overlapMm, showGuide, baseTilePxW, baseTilePxH, overlapPx } = geom;
       const tiles = [];
 
-      const baseTileW = loadedImage.width / cols;
-      const baseTileH = loadedImage.height / rows;
-      const overlapRatio = overlapMm / 210;
-      const overlapPxX = baseTileW * overlapRatio;
-      const overlapPxY = baseTileH * overlapRatio;
+      // 모든 타일의 원본 기준 가상 폭/높이 (양쪽에 항상 overlapPx 슬롯을 확보하여 배율 통일)
+      const virtualFullPxW = baseTilePxW + 2 * overlapPx;
+      const virtualFullPxH = baseTilePxH + 2 * overlapPx;
+
+      // 메모리 부족(OOM) 방지를 위해 타일 1장당 최대 해상도를 1600px(약 180~200 DPI)로 제한
+      const MAX_TILE_PX = 1600;
+      const downScale = Math.min(1, MAX_TILE_PX / Math.max(virtualFullPxW, virtualFullPxH));
+
+      const canvasW = Math.round(virtualFullPxW * downScale);
+      const canvasH = Math.round(virtualFullPxH * downScale);
 
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
-          const sx = Math.max(0, c * baseTileW - (c > 0 ? overlapPxX : 0));
-          const sy = Math.max(0, r * baseTileH - (r > 0 ? overlapPxY : 0));
-          const ex = Math.min(loadedImage.width, (c + 1) * baseTileW + (c < cols - 1 ? overlapPxX : 0));
-          const ey = Math.min(loadedImage.height, (r + 1) * baseTileH + (r < rows - 1 ? overlapPxY : 0));
+          // 이 타일의 가상 전체 영역 (외곽 타일은 음수이거나 원본 크기를 초과함)
+          const idealSx = c * baseTilePxW - overlapPx;
+          const idealSy = r * baseTilePxH - overlapPx;
+          const idealEx = (c + 1) * baseTilePxW + overlapPx;
+          const idealEy = (r + 1) * baseTilePxH + overlapPx;
 
-          const sw = ex - sx;
-          const sh = ey - sy;
+          // 실제 원본 이미지 내부와 겹치는 유효 픽셀 구간만 클리핑
+          const actualSx = Math.max(0, idealSx);
+          const actualSy = Math.max(0, idealSy);
+          const actualEx = Math.min(loadedImage.width, idealEx);
+          const actualEy = Math.min(loadedImage.height, idealEy);
+
+          const sw = actualEx - actualSx;
+          const sh = actualEy - actualSy;
+
+          // 고정 규격 캔버스 내부에서 그려질 정확한 위치 오프셋 계산
+          const dx = (actualSx - idealSx) * downScale;
+          const dy = (actualSy - idealSy) * downScale;
+          const dw = sw * downScale;
+          const dh = sh * downScale;
 
           const tileCanvas = document.createElement('canvas');
-          tileCanvas.width = Math.round(sw);
-          tileCanvas.height = Math.round(sh);
+          tileCanvas.width = canvasW;
+          tileCanvas.height = canvasH;
 
           const tCtx = tileCanvas.getContext('2d');
           tCtx.fillStyle = '#ffffff';
-          tCtx.fillRect(0, 0, tileCanvas.width, tileCanvas.height);
-          tCtx.drawImage(loadedImage, sx, sy, sw, sh, 0, 0, tileCanvas.width, tileCanvas.height);
+          tCtx.fillRect(0, 0, canvasW, canvasH);
+          tCtx.drawImage(loadedImage, actualSx, actualSy, sw, sh, dx, dy, dw, dh);
+
+          // 재단 안내선(순수 코어 영역 경계선)을 타일 내부의 정확한 mm 위치에 점선으로 표시
+          if (showGuide && overlapMm > 0) {
+            const coreX = overlapPx * downScale;
+            const coreY = overlapPx * downScale;
+            const coreW = baseTilePxW * downScale;
+            const coreH = baseTilePxH * downScale;
+
+            tCtx.save();
+            tCtx.strokeStyle = 'rgba(220, 38, 38, 0.75)';
+            tCtx.lineWidth = Math.max(1, Math.round(1.5 * downScale));
+            tCtx.setLineDash([6, 4]);
+            tCtx.strokeRect(coreX, coreY, coreW, coreH);
+            tCtx.restore();
+          }
 
           tiles.push({
             row: r + 1,
             col: c + 1,
-            dataUrl: tileCanvas.toDataURL('image/jpeg', 0.92),
-            width: tileCanvas.width,
-            height: tileCanvas.height
+            dataUrl: tileCanvas.toDataURL('image/jpeg', 0.85), // 메모리 절약을 위해 0.85 품질 적용
+            width: canvasW,
+            height: canvasH
           });
         }
       }
-      return tiles;
+      return { tiles, geom };
     }
 
     printBtn.addEventListener('click', () => {
       if (!loadedImage) return;
-      const { cols, rows, orientation, showGuide } = getSettings();
-      const tiles = generateTiles();
-      const jobName = `split_print_${cols}x${rows}`;
+      printBtn.disabled = true;
+      printBtn.textContent = '인쇄 데이터 생성 중...';
 
-      // 1순위: 안드로이드 네이티브 브릿지 (인터넷 연결 유무와 무관하게 100% 작동)
-      if (window.AndroidBridge && window.AndroidBridge.printTilesNative) {
-        window.AndroidBridge.printTilesNative(
-          JSON.stringify(tiles),
-          orientation,
-          showGuide,
-          jobName
-        );
-        return;
-      }
+      setTimeout(() => {
+        try {
+          const { tiles, geom } = generateUniformTiles();
+          const { cols, rows, orientation, showGuide, pageW, pageH, margin, printableW, printableH, totalTileMmW, totalTileMmH } = geom;
+          const jobName = `split_print_${cols}x${rows}`;
 
-      // 2순위: 일반 모바일/PC 웹 브라우저에서 열었을 때 jsPDF로 다운로드
-      if (window.jspdf && window.jspdf.jsPDF) {
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({
-          orientation: orientation === 'landscape' ? 'l' : 'p',
-          unit: 'mm',
-          format: 'a4'
-        });
-
-        const pageW = orientation === 'landscape' ? 297 : 210;
-        const pageH = orientation === 'landscape' ? 210 : 297;
-        const margin = 10;
-        const printableW = pageW - margin * 2;
-        const printableH = pageH - margin * 2 - (showGuide ? 8 : 0);
-
-        tiles.forEach((tile, index) => {
-          if (index > 0) pdf.addPage();
-          const imgRatio = tile.width / tile.height;
-          const boxRatio = printableW / printableH;
-          let drawW = printableW, drawH = printableW / imgRatio;
-          if (imgRatio <= boxRatio) {
-            drawH = printableH;
-            drawW = printableH * imgRatio;
-          }
-          const offsetX = margin + (printableW - drawW) / 2;
-          const offsetY = margin + (printableH - drawH) / 2;
-          pdf.addImage(tile.dataUrl, 'JPEG', offsetX, offsetY, drawW, drawH);
-
-          if (showGuide) {
-            pdf.setDrawColor(160, 160, 160);
-            pdf.setLineWidth(0.2);
-            pdf.rect(offsetX, offsetY, drawW, drawH);
-            pdf.setFontSize(9);
-            pdf.setTextColor(100, 100, 100);
-            pdf.text(
-              `Page ${index + 1}/${tiles.length}  [Row ${tile.row} - Col ${tile.col}]`,
-              pageW / 2,
-              pageH - 6,
-              { align: 'center' }
+          if (window.AndroidBridge && window.AndroidBridge.printTilesNative) {
+            window.AndroidBridge.printTilesNative(
+              JSON.stringify(tiles),
+              orientation,
+              showGuide,
+              jobName
             );
+          } else if (window.jspdf && window.jspdf.jsPDF) {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({
+              orientation: orientation === 'landscape' ? 'l' : 'p',
+              unit: 'mm',
+              format: 'a4'
+            });
+
+            // 모든 페이지에 정확히 동일한 물리적 mm 크기(totalTileMmW x totalTileMmH)로 배치
+            const offsetX = margin + (printableW - totalTileMmW) / 2;
+            const offsetY = margin + (printableH - totalTileMmH) / 2;
+
+            tiles.forEach((tile, index) => {
+              if (index > 0) pdf.addPage();
+              pdf.addImage(tile.dataUrl, 'JPEG', offsetX, offsetY, totalTileMmW, totalTileMmH);
+
+              if (showGuide) {
+                pdf.setDrawColor(180, 180, 180);
+                pdf.setLineWidth(0.2);
+                pdf.rect(offsetX, offsetY, totalTileMmW, totalTileMmH);
+                pdf.setFontSize(9);
+                pdf.setTextColor(100, 100, 100);
+                pdf.text(
+                  `Page ${index + 1}/${tiles.length}  [Row ${tile.row} - Col ${tile.col}] (점선: 재단/풀칠 기준선)`,
+                  pageW / 2,
+                  pageH - 6,
+                  { align: 'center' }
+                );
+              }
+            });
+            pdf.save(`${jobName}.pdf`);
           }
-        });
-        pdf.save(`${jobName}.pdf`);
-      }
+        } finally {
+          printBtn.disabled = false;
+          printBtn.textContent = '분할 인쇄 및 PDF 저장 실행';
+        }
+      }, 50);
     });
   </script>
 </body>
